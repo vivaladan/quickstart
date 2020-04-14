@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WebApp.Models;
 
@@ -45,14 +46,31 @@ namespace WebApp.Controllers
         
         public async Task<IActionResult> CallApi()
         {
+            ViewBag.Json = await Request("https://localhost:5001/identity");
+            return View("Json");
+        }
+
+        public async Task<IActionResult> GetProfile()
+        {
+            ViewBag.Json = await Request("https://localhost:5000/api/profile");
+            return View("Json");
+        }
+        
+        public async Task<IActionResult> GetClients()
+        {
+            ViewBag.Json = await Request("https://localhost:5000/api/clients");
+            return View("Json");
+        }
+
+        private async Task<string> Request(string url)
+        {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = await client.GetStringAsync("https://localhost:5001/identity");
+            var content = await client.GetStringAsync(url);
 
-            ViewBag.Json = JArray.Parse(content).ToString();
-            return View("Json");
+            return JValue.Parse(content).ToString(Formatting.Indented);
         }
     }
 }

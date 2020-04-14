@@ -20,7 +20,8 @@ namespace IdentityServer
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("api1", "My API"),
+                new ApiResource("admin", "Admin API"),
             };
         
         public static IEnumerable<Client> Clients =>
@@ -61,7 +62,8 @@ namespace IdentityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        "api1", 
+                        "admin",
                     },
                     AllowOfflineAccess = true,
                     
