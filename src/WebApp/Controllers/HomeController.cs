@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -46,23 +43,23 @@ namespace WebApp.Controllers
         
         public async Task<IActionResult> CallApi()
         {
-            ViewBag.Json = await Request("https://localhost:5001/identity");
+            ViewBag.Json = await HttpRequest("https://localhost:5001/identity");
             return View("Json");
         }
 
         public async Task<IActionResult> GetProfile()
         {
-            ViewBag.Json = await Request("https://localhost:5000/api/profile");
+            ViewBag.Json = await HttpRequest("https://localhost:5000/api/profile");
             return View("Json");
         }
         
         public async Task<IActionResult> GetClients()
         {
-            ViewBag.Json = await Request("https://localhost:5000/api/clients");
+            ViewBag.Json = await HttpRequest("https://localhost:5000/api/clients");
             return View("Json");
         }
 
-        private async Task<string> Request(string url)
+        private async Task<string> HttpRequest(string url)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
